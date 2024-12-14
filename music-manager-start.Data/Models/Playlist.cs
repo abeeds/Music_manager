@@ -12,7 +12,5 @@ namespace music_manager_start.Data.Models
         public string Title { get; set; }
         public string Desc { get; set; }
         public int SongCount { get; set; }
-
-        public ICollection<PlaylistSong> PlaylistSongs { get; set; } = new List<PlaylistSong>();
     }
 }
