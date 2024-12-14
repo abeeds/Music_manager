@@ -28,7 +28,20 @@ namespace music_manager_starter.Data
                 new Song { Id = Guid.Parse("b7cc1c82-77e2-40d0-8bc2-d7e05962c0e3"), Title = "Utah", Artist = "French Cassettes", Album = "The Great Escape", Genre = "Indie" },
                 new Song { Id = Guid.Parse("22aa6f84-06d8-4a0e-bdad-3000b35b5b5f"), Title = "Something Real", Artist = "Post Malone", Album = "Twelve Carat Toothache", Genre = "Hip Hop" }
             );
-        }
 
+            // PlaylistSong relation to Playlist
+            modelBuilder.Entity<PlaylistSong>()
+                .HasOne(e => e.Playlist)
+                .WithMany(e => e.PlaylistSongs)
+                .HasForeignKey(e => e.PlaylistId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // PlaylistSong relation to Song
+            modelBuilder.Entity<PlaylistSong>()
+                .HasOne(e => e.Song)
+                .WithMany(e => e.PlaylistSongs)
+                .HasForeignKey(e => e.SongId)
+                .OnDelete(DeleteBehavior.Cascade);
+        }
     }
 }
