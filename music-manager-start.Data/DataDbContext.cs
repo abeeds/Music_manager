@@ -33,15 +33,15 @@ namespace music_manager_starter.Data
 
             // PlaylistSong relation to Playlist
             modelBuilder.Entity<PlaylistSong>()
-                .HasOne(e => e.Playlist)
-                .WithMany(e => e.PlaylistSong)
+                .HasOne<Playlist>()
+                .WithMany()
                 .HasForeignKey(e => e.PlaylistId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // PlaylistSong relation to Song
             modelBuilder.Entity<PlaylistSong>()
-                .HasOne(e => e.Song)
-                .WithMany(e => e.PlaylistSong)
+                .HasOne<Song>()
+                .WithMany()
                 .HasForeignKey(e => e.SongId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
