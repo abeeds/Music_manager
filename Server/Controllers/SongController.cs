@@ -21,6 +21,7 @@ namespace music_manager_starter.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Song>>> GetSongs(Guid? Id = null)
         {
+            // return single song if an Id is given
             if (Id.HasValue)
             {
                 var s = await _context.Songs
@@ -28,11 +29,12 @@ namespace music_manager_starter.Server.Controllers
                     .ToListAsync();
 
                 if (s.Count == 0)
-                {
                     return NotFound("Song not found.");
-                }
+
                 return Ok(s);
             }
+
+            // return all songs if no Id is given
             return await _context.Songs.ToListAsync();
         }
 
@@ -40,14 +42,10 @@ namespace music_manager_starter.Server.Controllers
         public async Task<ActionResult<Song>> PostSong(Song song)
         {
             if (song == null)
-            {
                 return BadRequest("Song cannot be null.");
-            }
-
 
             _context.Songs.Add(song);
             await _context.SaveChangesAsync();
-
             return Ok();
         }
     }
