@@ -12,6 +12,6 @@ namespace music_manager_starter.Data.Models
         public Guid Id { get; set; }
         public string Title { get; set; }
         public string Desc { get; set; }
-        public int SongCount { get; set; }
+        public int SongCount { get; set; } = 0;
     }
 }
