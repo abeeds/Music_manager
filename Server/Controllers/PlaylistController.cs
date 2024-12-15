@@ -39,9 +39,8 @@ namespace music_manager_starter.Server.Controllers
                     .ToListAsync();
 
                 if (pl.Count == 0) 
-                {
                     return NotFound("Playlist not found.");
-                }
+
                 return Ok(pl);
             }
 
@@ -54,9 +53,7 @@ namespace music_manager_starter.Server.Controllers
         public async Task<ActionResult<Playlist>> PostPlaylist(Playlist playlist)
         {
             if (playlist == null)
-            {
                 return BadRequest("Playlist cannot be null.");
-            }
 
             _context.Playlists.Add(playlist);
             await _context.SaveChangesAsync();
@@ -89,6 +86,21 @@ namespace music_manager_starter.Server.Controllers
 
             await _context.SaveChangesAsync();
             return Ok("Playlist updated.");
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult<Playlist>> DelPlaylist(Guid Id)
+        {
+            if(Id == Guid.Empty)
+                return BadRequest("Id cannot be null.");
+
+            var pl = await _context.Playlists.FindAsync(Id);
+            if(pl == null)
+                return NotFound("Id does not match any existing playlist.");
+
+            _context.Playlists.Remove(pl);
+            await _context.SaveChangesAsync();
+            return NoContent();
         }
     }
 }
