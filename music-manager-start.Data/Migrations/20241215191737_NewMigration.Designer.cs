@@ -11,8 +11,8 @@ using music_manager_starter.Data;
 namespace music_manager_starter.Data.Migrations
 {
     [DbContext(typeof(DataDbContext))]
-    [Migration("20241215191737_NewMigrationName")]
-    partial class NewMigrationName
+    [Migration("20241215191737_NewMigration")]
+    partial class NewMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
