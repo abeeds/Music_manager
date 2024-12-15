@@ -13,8 +13,8 @@ namespace music_manager_starter.Data
         public DataDbContext(DbContextOptions<DataDbContext> options) : base(options) { }
 
         public DbSet<Song> Songs { get; set; }
-        public DbSet<Playlist> Playlist { get; set; }
-        public DbSet<PlaylistSong> PlaylistSong { get; set; }
+        public DbSet<Playlist> Playlists { get; set; }
+        public DbSet<PlaylistSong> PlaylistSongs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

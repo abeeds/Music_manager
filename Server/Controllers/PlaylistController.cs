@@ -20,7 +20,7 @@ namespace music_manager_starter.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Playlist>>> GetPlaylists()
         {
-            return await _context.Playlist.ToListAsync();
+            return await _context.Playlists.ToListAsync();
         }
 
         [HttpPost]
@@ -31,7 +31,7 @@ namespace music_manager_starter.Server.Controllers
                 return BadRequest("Playlist cannot be null.");
             }
 
-            _context.Playlist.Add(playlist);
+            _context.Playlists.Add(playlist);
             await _context.SaveChangesAsync();
             return Ok();
         }
