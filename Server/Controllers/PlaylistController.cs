@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using music_manager_starter.Data;
 using music_manager_starter.Data.Models;
 using System;
+using System.Text.Json;
 
 namespace music_manager_starter.Server.Controllers
 {
@@ -18,8 +19,23 @@ namespace music_manager_starter.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Playlist>>> GetPlaylists()
+        public async Task<ActionResult<IEnumerable<Playlist>>> GetPlaylists(Guid? Id = null)
         {
+            // search for specific Playlist if an Id was provided
+            if (Id.HasValue)
+            {
+                var pl = await _context.Playlists
+                    .Where(p => p.Id == Id)
+                    .ToListAsync();
+
+                if (pl.Count == 0) 
+                {
+                    return NotFound("Playlist not found.");
+                }
+                return Ok(pl);
+            }
+
+            // return all playlists
             return await _context.Playlists.ToListAsync();
         }
 
