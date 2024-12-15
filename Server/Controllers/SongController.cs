@@ -19,8 +19,20 @@ namespace music_manager_starter.Server.Controllers
 
   
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Song>>> GetSongs()
+        public async Task<ActionResult<IEnumerable<Song>>> GetSongs(Guid? Id = null)
         {
+            if (Id.HasValue)
+            {
+                var s = await _context.Songs
+                    .Where(s => s.Id == Id)
+                    .ToListAsync();
+
+                if (s.Count == 0)
+                {
+                    return NotFound("Song not found.");
+                }
+                return Ok(s);
+            }
             return await _context.Songs.ToListAsync();
         }
 
