@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using music_manager_start.Data.Models;
 using music_manager_starter.Data.Models;
 using System;
 using System.Collections.Generic;
@@ -29,17 +28,20 @@ namespace music_manager_starter.Data
                 new Song { Id = Guid.Parse("22aa6f84-06d8-4a0e-bdad-3000b35b5b5f"), Title = "Something Real", Artist = "Post Malone", Album = "Twelve Carat Toothache", Genre = "Hip Hop" }
             );
 
+            modelBuilder.Entity<PlaylistSong>()
+                .HasKey(e => new { e.SongId, e.PlaylistId });
+
             // PlaylistSong relation to Playlist
             modelBuilder.Entity<PlaylistSong>()
                 .HasOne(e => e.Playlist)
-                .WithMany(e => e.PlaylistSongs)
+                .WithMany(e => e.PlaylistSong)
                 .HasForeignKey(e => e.PlaylistId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // PlaylistSong relation to Song
             modelBuilder.Entity<PlaylistSong>()
                 .HasOne(e => e.Song)
-                .WithMany(e => e.PlaylistSongs)
+                .WithMany(e => e.PlaylistSong)
                 .HasForeignKey(e => e.SongId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
