@@ -18,6 +18,16 @@ namespace music_manager_starter.Server.Controllers
             _context = context;
         }
 
+        // expected body of PutPlaylist
+        public class EditPlaylist
+        {
+            public Guid Id { get; set; }
+            public string? Title { get; set; } = null;
+            public string? Desc { get; set; } = null;
+        }
+
+        // Retrieves playlist data
+        // If Id Param is included, it will only include that playlist's data
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Playlist>>> GetPlaylists(Guid? Id = null)
         {
@@ -39,6 +49,7 @@ namespace music_manager_starter.Server.Controllers
             return await _context.Playlists.ToListAsync();
         }
 
+        // Creates a new playlist
         [HttpPost]
         public async Task<ActionResult<Playlist>> PostPlaylist(Playlist playlist)
         {
@@ -50,6 +61,34 @@ namespace music_manager_starter.Server.Controllers
             _context.Playlists.Add(playlist);
             await _context.SaveChangesAsync();
             return Ok();
+        }
+
+        // Edit an existing playlist, which is specified by Id in the json
+        // need to have atleast one of Title or Desc in the json
+        [HttpPut]
+        public async Task<ActionResult<Playlist>> PutPlaylist(EditPlaylist playlist)
+        {
+            // check arguments
+            if(playlist == null)
+                return BadRequest("Playlist cannot be null.");
+            if(playlist.Id == Guid.Empty) 
+                return BadRequest("Playlist Id required.");
+            if(playlist.Title == null && playlist.Desc == null)
+                return BadRequest("Must include atleast one: Title, Desc.");
+
+            // ensure playlist exists
+            var existing_pl = await _context.Playlists.FindAsync(playlist.Id);
+            if(existing_pl == null)
+                return BadRequest("Id does not match any existing playlist.");
+
+            // update values
+            if(playlist.Title != null)
+                existing_pl.Title = playlist.Title;
+            if(playlist.Desc != null)
+                existing_pl.Desc = playlist.Desc;
+
+            await _context.SaveChangesAsync();
+            return Ok("Playlist updated.");
         }
     }
 }
