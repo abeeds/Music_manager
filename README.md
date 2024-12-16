@@ -44,19 +44,19 @@ I also updated some entity relationships in `music-manager-start.Data\DataDbCont
 
 I then had to create the following endpoints in the API to allow the frontend
 to access these tables:
-- GET `api/playlists`
+- GET `/api/playlists`
     - Returns all playlists
-- GET `api/playlists?id={PLAYLIST_ID}` 
+- GET `/api/playlists?id={PLAYLIST_ID}` 
     - Returns the specified playlists data
     - Id must be a valid Guid
-- POST `api/playlists`
+- POST `/api/playlists`
     - Sample JSON Request: `{"Title": "My Playlist", "Desc": "My favorite songs."}`
-- PUT `api/playlists` 
+- PUT `/api/playlists` 
     - Updates a playlist's values
     - Id is required and must be a valid Guid
     - Must have atleast one of these values: Title and Desc
     - Sample JSON Request: `{"Id": "abc-123-abc", "Desc": "My favorite songs."}`
-- DELETE `api/playlists?id={PLAYLIST_ID}`
+- DELETE `/api/playlists?id={PLAYLIST_ID}`
     - Deletes the specified playlist
     - Id must be a valid Guid
 
