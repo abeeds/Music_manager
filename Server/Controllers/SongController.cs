@@ -26,9 +26,9 @@ namespace music_manager_starter.Server.Controllers
             {
                 var s = await _context.Songs
                     .Where(s => s.Id == Id)
-                    .ToListAsync();
+                    .FirstOrDefaultAsync();
 
-                if (s.Count == 0)
+                if (s == null)
                     return NotFound("Song not found.");
 
                 return Ok(s);

@@ -36,9 +36,9 @@ namespace music_manager_starter.Server.Controllers
             {
                 var pl = await _context.Playlists
                     .Where(p => p.Id == Id)
-                    .ToListAsync();
+                    .FirstOrDefaultAsync();
 
-                if (pl.Count == 0) 
+                if (pl == null) 
                     return NotFound("Playlist not found.");
 
                 return Ok(pl);
