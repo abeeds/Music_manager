@@ -73,7 +73,7 @@ namespace music_manager_starter.Server.Controllers
             // ensure playlist exists
             var existing_pl = await _context.Playlists.FindAsync(playlist.Id);
             if(existing_pl == null)
-                return NotFound("Id does not match any existing playlist.");
+                return NotFound("Playlist not found.");
 
             // update values
             if(playlist.Title != null)
