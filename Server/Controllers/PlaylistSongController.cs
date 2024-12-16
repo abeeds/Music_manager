@@ -26,9 +26,7 @@ namespace music_manager_starter.Server.Controllers
                 return BadRequest("PlaylistId cannot be null.");
 
             // ensure playlist exists
-            var playlist = await _context.Playlists
-                .Where(pl => pl.Id == PlaylistId)
-                .FirstOrDefaultAsync();
+            var playlist = await _context.Playlists.FindAsync(PlaylistId);
             if(playlist == null)
                 return NotFound("Playlist not found.");
 
@@ -67,28 +65,23 @@ namespace music_manager_starter.Server.Controllers
                 return BadRequest("PlaylistId and SongId cannot be null.");
 
             // ensure playlist exists
-            var playlist = await _context.Playlists
-                .Where(pl => pl.Id == PlaylistSong.PlaylistId)
-                .FirstOrDefaultAsync();
+            var playlist = await _context.Playlists.FindAsync(PlaylistSong.PlaylistId);
             if(playlist == null)
                 return NotFound("Playlist not found.");
 
             // ensure song exists
-            var s = await _context.Songs
-                .Where(s => s.Id == PlaylistSong.SongId)
-                .FirstOrDefaultAsync();
+            var s = await _context.Songs.FindAsync(PlaylistSong.SongId);
             if (s == null)
                 return NotFound("Song not found.");
 
             // check if song is already in playlist
             var pls = await _context.PlaylistSongs
-                .Where(pls => pls.PlaylistId == PlaylistSong.PlaylistId 
-                              && pls.SongId == PlaylistSong.SongId)
-                .ToListAsync();
-            if(pls.Count != 0)
+                .FindAsync(PlaylistSong.PlaylistId, PlaylistSong.SongId);
+            if(pls != null)
                 return Conflict("Song is already in playlist.");
 
             _context.PlaylistSongs.Add(PlaylistSong);
+            playlist.SongCount += 1;
             await _context.SaveChangesAsync();
             return Ok();
         }
@@ -96,6 +89,11 @@ namespace music_manager_starter.Server.Controllers
         [HttpDelete]
         public async Task<ActionResult<PlaylistSong>> DelPlaylistSong(Guid PlaylistId, Guid SongId)
         {
+            // ensure playlist exists
+            var playlist = await _context.Playlists.FindAsync(PlaylistId);
+            if(playlist == null)
+                return NotFound("Playlist not found.");
+
             // check if the entry exists
             var pls = await _context.PlaylistSongs
                 .Where(pls => pls.PlaylistId == PlaylistId 
@@ -105,6 +103,7 @@ namespace music_manager_starter.Server.Controllers
                 return NotFound("Song not found in playlist.");
 
             _context.PlaylistSongs.Remove(pls);
+            playlist.SongCount -= 1;
             await _context.SaveChangesAsync();
             return NoContent();
         }
