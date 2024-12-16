@@ -47,7 +47,7 @@ to access these tables:
 - GET `/api/playlists`
     - Returns all playlists
 - GET `/api/playlists?id={PLAYLIST_ID}` 
-    - Returns the specified playlists data
+    - Returns the specified playlist's data
     - Id must be a valid Guid
 - POST `/api/playlists`
     - Sample JSON Request: `{"Title": "My Playlist", "Desc": "My favorite songs."}`
