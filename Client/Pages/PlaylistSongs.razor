@@ -1,36 +1,39 @@
-﻿@page "/Playlists"
+@page "/{Id}"
 @using music_manager_starter.Shared
 
 @inject HttpClient Http
 
 @code {
-    private List<Playlist> playlists;
+    [Parameter]
+    public string Id { get; set; }
+    private List<Song> songs;
+    private string playlistTitle;
 
     protected override async Task OnInitializedAsync()
     {
-        playlists = await Http.GetFromJsonAsync<List<Playlist>>("api/playlists");
+        var playlist = await Http.GetFromJsonAsync<Playlist>($"api/playlists/?Id={Id}");
+        playlistTitle = playlist.Title;
+        songs = await Http.GetFromJsonAsync<List<Song>>($"api/playlists/songs/?PlaylistId={Id}");
     }
 }
 
 <div class="p-0 min-h-screen bg-pattern flex flex-col items-center justify-center">
-    <h2 class="text-3xl font-bold text-white mb-8 text-center">Playlists</h2>
+    <h2 class="text-3xl font-bold text-white mb-8 text-center">@playlistTitle</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-        @if (playlists != null && playlists.Count > 0)
+        @if (songs != null && songs.Count > 0)
         {
-            @foreach (var playlist in playlists)
+            @foreach (var song in songs)
             {
-                <a class="glass p-6 border border-gray-300 rounded-lg text-white transition-transform transform hover:scale-105 hover:shadow-xl cursor-pointer"
-                    href="@($"/{playlist.Id.ToString("D")}")"
-                >
-                    <h3 class="text-xl font-semibold mb-2">@playlist.Title</h3>
-                    <p class="text-md">@playlist.Desc</p>
+                <div class="glass p-6 border border-gray-300 rounded-lg text-white transition-transform transform hover:scale-105 hover:shadow-xl cursor-pointer">
+                    <h3 class="text-xl font-semibold mb-2">@song.Title</h3>
+                    <p class="text-md">Artist: <span class="font-light">@song.Artist</span></p>
 
-                </a>
+                </div>
             }
         }
         else
         {
-            <div class="col-span-1 text-center text-gray-400">No playlists found.</div>
+            <div class="col-span-1 text-center text-gray-400">No songs found.</div>
         }
     </div>
 </div>
