@@ -3,16 +3,18 @@
 This solution contains an easy to use and simple music manager.
 
 ## Agenda
-- Big feature
-    - implement frontend
+- Big feature frontend
+    - add way to add songs to playlist
+    - add way to remove songs from playlists
+    - add way to edit playlists
+    - add way to delete playlists
 
 - Search functionality
     - edit GET api/song to take a search query optionally
-        - split words in the query
         - if any words match a title, album, or artist, return them
 
 - Song details
-    - clicking a song on the root page expands the box and shows details
+    - clicking a song takes you to a new page that displays all the info
 
 ## Main Feature - Playlist Management
 ### Database
@@ -37,6 +39,8 @@ I also updated some entity relationships in `music-manager-start.Data\DataDbCont
 ### API Endpoints
 I then had to create the following endpoints to access the tables I had just created.
 The following endpoints can be found in `Server/Controllers`.
+
+Endpoints that manage the Playlists table:
 - GET `/api/playlists`
     - Returns all playlists
 - GET `/api/playlists?Id={PLAYLIST_ID}` 
@@ -53,6 +57,15 @@ The following endpoints can be found in `Server/Controllers`.
     - Deletes the specified playlist
     - Id must be a valid Guid
 
+Endpoints that manage the PlaylistSongs table:
+- GET `/api/playlists/songs?=PlaylistId={PLAYLIST_ID}`
+    - Returns all songs in the specified playlist
+    - PlaylistId must be a valid Guid
+- POST `/api/playlists/songs`
+    - Adds a song to a playlist
+    - Sample JSON Request: `{"PlaylistId": "8213D28C-29EB-4365-8867-C721494BD30A", "SongId": "22AA6F84-06D8-4A0E-BDAD-3000B35B5B5F"}`
+- DELETE `/api/playlists/songs?=PlaylistId={PLAYLIST_ID}&SongId{SONG_ID}`
+    - Removes a song from a playlist
 
 ## Improvement 1 - Song Details
 
