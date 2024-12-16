@@ -93,7 +93,7 @@ namespace music_manager_starter.Server.Controllers
 
             var pl = await _context.Playlists.FindAsync(Id);
             if(pl == null)
-                return NotFound("Id does not match any existing playlist.");
+                return NotFound("Playlist not found.");
 
             _context.Playlists.Remove(pl);
             await _context.SaveChangesAsync();
