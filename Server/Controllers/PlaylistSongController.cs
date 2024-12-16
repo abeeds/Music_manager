@@ -27,7 +27,7 @@ namespace music_manager_starter.Server.Controllers
                 .Where(pls => pls.PlaylistId == PlaylistId)
                 .ToListAsync();
 
-            if (s.Count == 0)
+            if (pls.Count == 0)
                 return NotFound("No songs are in the specified playlist.");
 
             return Ok(pls);
