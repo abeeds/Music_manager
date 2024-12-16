@@ -92,5 +92,21 @@ namespace music_manager_starter.Server.Controllers
             await _context.SaveChangesAsync();
             return Ok();
         }
+
+        [HttpDelete]
+        public async Task<ActionResult<PlaylistSong>> DelPlaylistSong(Guid PlaylistId, Guid SongId)
+        {
+            // check if the entry exists
+            var pls = await _context.PlaylistSongs
+                .Where(pls => pls.PlaylistId == PlaylistId 
+                                && pls.SongId == SongId)
+                .FirstOrDefaultAsync();
+            if(pls == null)
+                return NotFound("Song not found in playlist.");
+
+            _context.PlaylistSongs.Remove(pls);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
     }
 }
