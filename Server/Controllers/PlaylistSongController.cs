@@ -28,8 +28,8 @@ namespace music_manager_starter.Server.Controllers
             // ensure playlist exists
             var playlist = await _context.Playlists
                 .Where(pl => pl.Id == PlaylistId)
-                .ToListAsync();
-            if(playlist.Count == 0)
+                .FirstOrDefaultAsync();
+            if(playlist == null)
                 return NotFound("Playlist not found.");
 
             // get all songs in the playlist
@@ -69,15 +69,15 @@ namespace music_manager_starter.Server.Controllers
             // ensure playlist exists
             var playlist = await _context.Playlists
                 .Where(pl => pl.Id == PlaylistSong.PlaylistId)
-                .ToListAsync();
-            if(playlist.Count == 0)
+                .FirstOrDefaultAsync();
+            if(playlist == null)
                 return NotFound("Playlist not found.");
 
             // ensure song exists
             var s = await _context.Songs
                 .Where(s => s.Id == PlaylistSong.SongId)
-                .ToListAsync();
-            if (s.Count == 0)
+                .FirstOrDefaultAsync();
+            if (s == null)
                 return NotFound("Song not found.");
 
             // check if song is already in playlist
