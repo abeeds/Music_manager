@@ -48,9 +48,6 @@ namespace music_manager_starter.Server.Controllers
                 )
                 .ToListAsync();
 
-            if (plsongs.Count == 0)
-                return NotFound("No songs are in the specified playlist.");
-
             return Ok(plsongs);
         }
 
