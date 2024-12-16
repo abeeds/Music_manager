@@ -35,14 +35,17 @@ namespace music_manager_starter.Server.Controllers
             // get all songs in the playlist
             var plsongs = await _context.PlaylistSongs
                 .Where(ps => ps.PlaylistId == PlaylistId)
-                .GroupJoin(
+                .Join(
                     _context.Songs,
                     playlistSong => playlistSong.SongId,
                     song => song.Id,
-                    (playlistSong, songs) => new
+                    (playlistSong, song) => new
                     {
-                        PlaylistSong = playlistSong,
-                        Song = songs.FirstOrDefault()
+                        song.Id,
+                        song.Title,
+                        song.Artist,
+                        song.Album,
+                        song.Genre
                     }
                 )
                 .ToListAsync();
