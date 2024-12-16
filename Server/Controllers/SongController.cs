@@ -24,10 +24,7 @@ namespace music_manager_starter.Server.Controllers
             // return single song if an Id is given
             if (Id.HasValue)
             {
-                var s = await _context.Songs
-                    .Where(s => s.Id == Id)
-                    .FirstOrDefaultAsync();
-
+                var s = await _context.Songs.FindAsync(Id);
                 if (s == null)
                     return NotFound("Song not found.");
 

@@ -34,10 +34,7 @@ namespace music_manager_starter.Server.Controllers
             // search for specific Playlist if an Id was provided
             if (Id.HasValue)
             {
-                var pl = await _context.Playlists
-                    .Where(p => p.Id == Id)
-                    .FirstOrDefaultAsync();
-
+                var pl = await _context.Playlists.FindAsync(Id);
                 if (pl == null) 
                     return NotFound("Playlist not found.");
 
