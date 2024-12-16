@@ -17,21 +17,20 @@ namespace music_manager_starter.Server.Controllers
             _context = context;
         }
 
-  
+        // returns songs from the specified playlist
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Song>>> GetPlaylistSongs(Guid PlaylistId = null)
         {
             if(PlaylistId == Guid.Empty)
-                return BadRequest("PlaylistId cannot be null");
+                return BadRequest("PlaylistId cannot be null.");
             var pls = await _context.PlaylistSongs
                 .Where(pls => pls.PlaylistId == PlaylistId)
                 .ToListAsync();
 
             if (s.Count == 0)
-                return NotFound("No songs are in the specified playlist");
+                return NotFound("No songs are in the specified playlist.");
 
             return Ok(pls);
-
         }
 
         [HttpPost]
