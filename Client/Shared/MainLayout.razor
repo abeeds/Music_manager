@@ -1,5 +1,17 @@
 ﻿@inherits LayoutComponentBase
+@inject NavigationManager NavigationManager
 
+@code {
+    private string searchQuery { get; set; }
+
+    private async Task Search(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            NavigationManager.NavigateTo($"/search?query={searchQuery}");
+        }
+    }
+}
 
 <div class="flex h-screen">
     <NavMenu />
@@ -7,7 +19,13 @@
         <div class="top-bar px-6 py-4 bg-gray-900 text-white flex items-center justify-between">
             <h1 class="text-xl font-semibold">Music</h1>
             <div class="relative">
-                <input type="text" placeholder="Search..." class="bg-gray-700 text-white px-4 py-2 rounded-full focus:outline-none">
+                <input type="text"
+                       placeholder="Search..."
+                       @bind="searchQuery"
+                       @bind:event="oninput"
+                       @onkeypress="Search"
+                       class="bg-gray-700 text-white px-4 py-2 rounded-full focus:outline-none"
+                />
                 <span class="absolute right-3 top-3 text-gray-400">
                     <i class="fas fa-search"></i>
                 </span>

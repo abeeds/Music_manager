@@ -1,28 +1,31 @@
-﻿@page "/"
+﻿@page "/search"
 @using music_manager_starter.Shared
 
 @inject HttpClient Http
 
 @code {
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string query { get; set; }
     private List<Song> songs;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
-        songs = await Http.GetFromJsonAsync<List<Song>>("api/songs");
+        songs = await Http.GetFromJsonAsync<List<Song>>($"api/songs?search={Uri.EscapeDataString(query)}");
     }
 }
 
 <div class="p-0 min-h-screen bg-pattern flex flex-col items-center justify-center">
-    <h2 class="text-3xl font-bold text-white mb-8 text-center">Song Library</h2>
+    <h2 class="text-3xl font-bold text-white mb-8 text-center">Search Results for: @query</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         @if (songs != null && songs.Count > 0)
         {
             @foreach (var song in songs)
             {
                 <a class="glass p-6 border border-gray-300 rounded-lg text-white transition-transform transform hover:scale-105 hover:shadow-xl cursor-pointer"
-                    href="@($"/{song.Id.ToString("D")}")"
-                >
+                   href="@($"/{song.Id.ToString("D")}")">
                     <h3 class="text-xl font-semibold mb-2">@song.Title</h3>
+                    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=playlist_add" />
                     <p class="text-md">Artist: <span class="font-light">@song.Artist</span></p>
                 </a>
             }
@@ -42,14 +45,14 @@
         font-family: 'Rajdhani', sans-serif;
     }
 
- 
+
 
     .glass {
         background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px); 
-        border-radius: 10px; 
-        position: relative; 
-        overflow: hidden; 
+        backdrop-filter: blur(10px);
+        border-radius: 10px;
+        position: relative;
+        overflow: hidden;
     }
 
         .glass:before {
@@ -61,6 +64,6 @@
             bottom: 0;
             border: 2px solid rgba(255, 255, 255, 0.2);
             border-radius: 10px;
-            pointer-events: none; 
+            pointer-events: none;
         }
 </style>
