@@ -9,13 +9,6 @@ This solution contains an easy to use and simple music manager.
     - add way to edit playlists
     - add way to delete playlists
 
-- Search functionality
-    - edit GET api/song to take a search query optionally
-        - if any words match a title, album, or artist, return them
-
-- Song details
-    - clicking a song takes you to a new page that displays all the info
-
 ## Main Feature - Playlist Management
 ### Database
 The first feature I added to this is playlist management. To allow for
@@ -68,10 +61,16 @@ Endpoints that manage the PlaylistSongs table:
     - Removes a song from a playlist
 
 ## Improvement 1 - Song Details
-
+I implemented this by modifying the GET `/api/songs` endpoint to accept an
+optional parameter, `Id`. If `Id` is provided, it will return the matching
+song. In the frontend, I made each individual song redirect to a page with
+the url `/{Id}` if they are clicked. At this new page, all of the song's
+information is shown. This is implemented in `Client/Pages/SongDetail.razor`.
 
 ## Improvement 2 - Search Feature
-
+I implemented this by modifying the GET `/api/songs` endpoint to accept an
+optional parameter, `search`. If `search` is provided, it will return any
+songs that contain the keywords provided in the search.
 
 ## Technologies
 - Visual Studio 2022 
