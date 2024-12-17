@@ -27,7 +27,7 @@ I implemented these in the following files:
 - `music-manager-start.Data/Models/Playlist.cs`
 - `music-manager-start.Data/Models/PlaylistSong.cs`
 
-I also updated some entity relationships in `music-manager-start.Data\DataDbContext.cs`
+I also updated some entity relationships in `music-manager-start.Data\DataDbContext.cs`.
 
 ### API Endpoints
 I then had to create the following endpoints to access the tables I had just created.
