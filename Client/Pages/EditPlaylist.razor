@@ -1,0 +1,59 @@
+﻿@page "/EditPlaylist/{Id}"
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@using music_manager_starter.Shared
+
+
+<div class="p-6">
+    <h2 class="text-xl font-semibold text-white">Edit Playlist</h2>
+    <EditForm Model="newPlaylist" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="mb-4">
+            <label class="block text-gray-200">Title</label>
+            <InputText @bind-Value="newPlaylist.Title" class="mt-1 block w-full p-2 border rounded" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-200">Description</label>
+            <InputText @bind-Value="newPlaylist.Desc" class="mt-1 block w-full p-2 border rounded" />
+        </div>
+        <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded">Edit playlist</button>
+    </EditForm>
+
+    @if (message != null)
+    {
+        <p class="mt-4 text-green-500">@message</p>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+    private Playlist newPlaylist = new Playlist();
+    private string message;
+
+    protected override async Task OnInitializedAsync()
+    {
+        newPlaylist = await Http.GetFromJsonAsync<Playlist>($"api/playlists/?Id={Id}");
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if(string.IsNullOrWhiteSpace(newPlaylist.Desc))
+        {
+            newPlaylist.Desc = string.Empty;
+        }
+
+        var response = await Http.PutAsJsonAsync("api/playlists", newPlaylist);
+        if (response.IsSuccessStatusCode)
+        {
+            NavigationManager.NavigateTo("/Playlists");
+        }
+        else
+        {
+            message = "Error editting playlist. Please try again.";
+        }
+    }
+}
