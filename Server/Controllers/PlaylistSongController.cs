@@ -73,7 +73,7 @@ namespace music_manager_starter.Server.Controllers
 
             // check if song is already in playlist
             var pls = await _context.PlaylistSongs
-                .FindAsync(PlaylistSong.PlaylistId, PlaylistSong.SongId);
+                .FirstOrDefaultAsync(ps => ps.PlaylistId == PlaylistSong.PlaylistId && ps.SongId == PlaylistSong.SongId);
             if(pls != null)
                 return Conflict("Song is already in playlist.");
 
