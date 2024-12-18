@@ -2,10 +2,6 @@
 
 This solution contains an easy to use and simple music manager.
 
-## Agenda
-- Big feature frontend
-    - add way to add songs to playlist
-
 ## Main Feature - Playlist Management
 ### Database
 The first feature I added to this is playlist management. To allow for
@@ -42,7 +38,7 @@ Endpoints that manage the Playlists table:
     - Updates a playlist's values
     - Id is required and must be a valid Guid
     - Must have atleast one of these values: Title and Desc
-    - Sample JSON Request: `{"Id": "abc-123-abc", "Desc": "My favorite songs."}`
+    - Sample JSON Request: `{"Id": "8213D28C-29EB-4365-8867-C721494BD30A", "Desc": "My favorite songs."}`
 - DELETE `/api/playlists?Id={PLAYLIST_ID}`
     - Deletes the specified playlist
     - Id must be a valid Guid
@@ -56,6 +52,37 @@ Endpoints that manage the PlaylistSongs table:
     - Sample JSON Request: `{"PlaylistId": "8213D28C-29EB-4365-8867-C721494BD30A", "SongId": "22AA6F84-06D8-4A0E-BDAD-3000B35B5B5F"}`
 - DELETE `/api/playlists/songs?=PlaylistId={PLAYLIST_ID}&SongId={SONG_ID}`
     - Removes a song from a playlist
+
+### Frontend
+The following new pages were created in the front end:
+- `/{Id}`
+    - Displays the details of a song with the specified id
+    - - implemented in `SongDetails.razor`
+- `/?query={}`
+    - shows search results
+    - implemented in `Index.razor`
+- `/Playlists`
+    - Displays all playlists available, how many songs they have,
+    and their description
+    - Each playlist has the following options
+        - Edit - redirects to a form allowing the user to edit the playlist's title and description
+        - Delete - this opens a confirmation window prompting the user 
+        if they're sure they want to delete this playlist
+    - implemented in `Playlists.razor`
+- `/Playlists/{Id}`
+    - Displays all songs in the specified playlist
+    - implemented in `PlaylistSongs.razor`
+- `/AddPlaylists`
+    - Form that creates a new playlist
+    - implemented in `AddPlaylist.razor`
+- `/EditPlaylist/{Id}`
+    - Form that updates a playlist's title and description
+    - implemented in `EditPlaylist.razor`
+
+Songs have an icon under their title that allows user to add add them to
+playlists. Clicking this icon opens up a prompt that displays all playlists.
+Clicking the checkbox next to the playlist title either adds or removes the
+song from the playlist.
 
 ## Improvement 1 - Song Details
 I implemented this by modifying the GET `/api/songs` endpoint to accept an
