@@ -5,9 +5,6 @@ This solution contains an easy to use and simple music manager.
 ## Agenda
 - Big feature frontend
     - add way to add songs to playlist
-    - add way to remove songs from playlists
-    - add way to edit playlists
-    - add way to delete playlists
 
 ## Main Feature - Playlist Management
 ### Database
@@ -57,7 +54,7 @@ Endpoints that manage the PlaylistSongs table:
 - POST `/api/playlists/songs`
     - Adds a song to a playlist
     - Sample JSON Request: `{"PlaylistId": "8213D28C-29EB-4365-8867-C721494BD30A", "SongId": "22AA6F84-06D8-4A0E-BDAD-3000B35B5B5F"}`
-- DELETE `/api/playlists/songs?=PlaylistId={PLAYLIST_ID}&SongId{SONG_ID}`
+- DELETE `/api/playlists/songs?=PlaylistId={PLAYLIST_ID}&SongId={SONG_ID}`
     - Removes a song from a playlist
 
 ## Improvement 1 - Song Details
