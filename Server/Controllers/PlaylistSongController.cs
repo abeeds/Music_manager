@@ -92,7 +92,8 @@ namespace music_manager_starter.Server.Controllers
                 return NotFound("Playlist not found.");
 
             // check if the entry exists
-            var pls = await _context.PlaylistSongs.FindAsync(PlaylistId, SongId);
+            var pls = await _context.PlaylistSongs
+                .FirstOrDefaultAsync(ps => ps.PlaylistId == PlaylistId && ps.SongId == SongId);
             if(pls == null)
                 return NotFound("Song not found in playlist.");
 
