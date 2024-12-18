@@ -53,32 +53,6 @@ Endpoints that manage the PlaylistSongs table:
 - DELETE `/api/playlists/songs?=PlaylistId={PLAYLIST_ID}&SongId={SONG_ID}`
     - Removes a song from a playlist
 
-### Frontend
-The following new pages were created in the front end:
-- `/{Id}`
-    - Displays the details of a song with the specified id
-    - implemented in `SongDetails.razor`
-- `/?query={}`
-    - shows search results
-    - implemented in `Index.razor`
-- `/Playlists`
-    - Displays all playlists available, how many songs they have,
-    and their description
-    - Each playlist has the following options
-        - Edit - redirects to a form allowing the user to edit the playlist's title and description
-        - Delete - this opens a confirmation window prompting the user 
-        if they're sure they want to delete this playlist
-    - implemented in `Playlists.razor`
-- `/Playlists/{Id}`
-    - Displays all songs in the specified playlist
-    - implemented in `PlaylistSongs.razor`
-- `/AddPlaylists`
-    - Form that creates a new playlist
-    - implemented in `AddPlaylist.razor`
-- `/EditPlaylist/{Id}`
-    - Form that updates a playlist's title and description
-    - implemented in `EditPlaylist.razor`
-
 Songs have an icon under their title that allows user to add add them to
 playlists. Clicking this icon opens up a prompt that displays all playlists.
 Clicking the checkbox next to the playlist title either adds or removes the
@@ -89,12 +63,39 @@ I implemented this by modifying the GET `/api/songs` endpoint to accept an
 optional parameter, `Id`. If `Id` is provided, it will return the matching
 song. In the frontend, I made each individual song redirect to a page with
 the url `/{Id}` if they are clicked. At this new page, all of the song's
-information is shown. This is implemented in `Client/Pages/SongDetail.razor`.
+information is shown.
 
 ## Improvement 2 - Search Feature
 I implemented this by modifying the GET `/api/songs` endpoint to accept an
 optional parameter, `search`. If `search` is provided, it will return any
 songs that contain the keywords provided in the search.
+
+## Frontend
+The following new pages were created in the front end:
+- `/{Id}`
+    - Displays the details of a song with the specified id
+    - Implemented in `SongDetails.razor`
+- `/?query={}`
+    - Shows search results
+    - This page is accessed by typing into the search bar and pressing enter
+    - Implemented in `Index.razor`
+- `/Playlists`
+    - Displays all playlists available, how many songs they have,
+    and their description
+    - Each playlist has the following options
+        - Edit - redirects to a form allowing the user to edit the playlist's title and description
+        - Delete - this opens a confirmation window prompting the user 
+        if they're sure they want to delete this playlist
+    - Implemented in `Playlists.razor`
+- `/Playlists/{Id}`
+    - Displays all songs in the specified playlist
+    - Implemented in `PlaylistSongs.razor`
+- `/AddPlaylists`
+    - Form that creates a new playlist
+    - Implemented in `AddPlaylist.razor`
+- `/EditPlaylist/{Id}`
+    - Form that updates a playlist's title and description
+    - Implemented in `EditPlaylist.razor`
 
 ## Technologies
 - Visual Studio 2022 
