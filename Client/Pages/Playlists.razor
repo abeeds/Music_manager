@@ -5,6 +5,8 @@
 
 @code {
     private List<Playlist> playlists;
+    private bool showDelOptions = false;
+    private Guid currentPlId;
 
     protected override async Task OnInitializedAsync()
     {
@@ -18,6 +20,18 @@
         {
             playlists.RemoveAll(p => p.Id == playlistId);
         }
+        showDelOptions = false;
+    }
+
+    private async Task ShowDelOptions(Guid PlaylistId)
+    {
+        currentPlId = PlaylistId;
+        showDelOptions = true;
+    }
+
+    private void HideDelOptions()
+    {
+        showDelOptions = false;
     }
 }
 
@@ -47,7 +61,7 @@
                         </a>
 
                         <!-- Delete Playlist -->
-                        <svg @onclick="@(() => DelPlaylist(playlist.Id))"
+                        <svg @onclick="@(() => ShowDelOptions(playlist.Id))"
                             class="svg_option transition-transform transform hover:scale-105 hover:shadow-xl cursor-pointer"
                             xmlns="http://www.w3.org/2000/svg"
                             height="24px"
@@ -68,6 +82,20 @@
             <div class="col-span-1 text-center text-gray-400">No playlists found.</div>
         }
     </div>
+
+    @if (showDelOptions)
+    {
+        <div class="plOptions-overlay">
+            <div class="plOptions-content glass flex space-x-4 items-center">
+                <h1 class="text-2xl text-white">Are you sure you want to delete this playlist?</h1>
+
+                <div class="flex-row yesno">
+                    <button class="done glass" @onclick="@(() => DelPlaylist(currentPlId))">Yes</button>
+                    <button class="done glass" @onclick="HideDelOptions">No</button>
+                </div>
+            </div>
+        </div>
+    }
 </div>
 
 <style>
@@ -106,5 +134,47 @@
     }
     .svg_option:hover {
         color: white;
+    }
+
+    .plOptions-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    }
+
+    .plOptions-content {
+        padding: 20px;
+        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 20rem;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .done {
+        background-color: #181c24;
+        color: white;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+        width: 40%;
+        cursor: pointer;
+    }
+
+        .done:hover {
+            background-color: #0d1e42;
+        }
+
+    .yesno {
+        width: 100%;
+        justify-content: center;
     }
 </style>
