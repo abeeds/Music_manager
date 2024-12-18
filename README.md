@@ -57,7 +57,7 @@ Endpoints that manage the PlaylistSongs table:
 The following new pages were created in the front end:
 - `/{Id}`
     - Displays the details of a song with the specified id
-    - - implemented in `SongDetails.razor`
+    - implemented in `SongDetails.razor`
 - `/?query={}`
     - shows search results
     - implemented in `Index.razor`
