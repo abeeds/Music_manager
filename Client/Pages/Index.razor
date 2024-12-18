@@ -8,6 +8,8 @@
     [SupplyParameterFromQuery]
     public string query { get; set; }
     private List<Song> songs;
+    private List<Playlist> playlists = new();
+    private Guid currentSongId;
     private bool showPlOptions = false;
 
     protected override async Task OnParametersSetAsync()
@@ -18,9 +20,12 @@
             songs = await Http.GetFromJsonAsync<List<Song>>("api/songs");
     }
 
-    private void ShowPlOptions(Guid SongId)
+    private async Task ShowPlOptions(Guid SongId)
     {
+        currentSongId = SongId;
         showPlOptions = true;
+        playlists.Clear();
+        playlists = await Http.GetFromJsonAsync<List<Playlist>>($"/api/playlists?SongId={SongId}");
     }
 
     private void HidePlOptions()
@@ -71,6 +76,42 @@
     {
         <div class="plOptions-overlay">
             <div class="plOptions-content glass">
+                @if (playlists != null && playlists.Count > 0)
+                {
+                    @foreach (var playlist in playlists)
+                    {
+                        <div class="pl">
+                            <span class="pl-title">@playlist.Title</span>
+                            @if (playlist.InPlaylist == true)
+                            {
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     height="24px"
+                                     viewBox="0 -960 960 960"
+                                     width="24px"
+                                     fill="black"
+                                     class="pl-icon">
+                                    <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q8 0 15 1.5t14 4.5l-74 74H200v560h560v-266l80-80v346q0 33-23.5 56.5T760-120H200Zm261-160L235-506l56-56 170 170 367-367 57 55-424 424Z" />
+                                </svg>
+                                
+                            }
+                            else
+                            {
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     height="24px"
+                                     viewBox="0 -960 960 960"
+                                     width="24px"
+                                     fill="black"
+                                     class="pl-icon">
+                                    <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Z" />
+                                </svg>
+                            }
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p class="text-gray-400">No playlists found.</p>
+                }
                 <button class="done glass" @onclick="HidePlOptions">Done</button>
             </div>
         </div>
@@ -134,6 +175,29 @@
         justify-content: center;
         align-items: center;
         width: 20rem;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .pl {
+        display: flex;
+        justify-content: space-between;
+        background-color: white;
+        color: black;
+        padding: 0.5rem;
+        width: 80%;
+        text-align: left;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+    }
+
+    .pl:hover {
+        background-color: #f0f0f0;
+    }
+
+    .plt-title {
+        text-align: left;
     }
 
     .done {

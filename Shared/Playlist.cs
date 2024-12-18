@@ -12,5 +12,6 @@ namespace music_manager_starter.Shared
         public string Title { get; set; }
         public string Desc { get; set; }
         public int SongCount { get; set; }
+        public bool? InPlaylist { get; set; } = null;
     }
 }
