@@ -28,10 +28,11 @@ namespace music_manager_starter.Server.Controllers
 
         // Retrieves playlist data
         // If Id Param is included, it will only include that playlist's data
+        // If SongId is included, it will return a list of {Id, Title, InPlaylist}
+        //      InPlaylist is a bool indicating if the song is in the playlist
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Playlist>>> GetPlaylists(Guid? Id = null)
+        public async Task<ActionResult<IEnumerable<Playlist>>> GetPlaylists(Guid? Id = null, Guid? SongId = null)
         {
-            // search for specific Playlist if an Id was provided
             if (Id.HasValue)
             {
                 var pl = await _context.Playlists.FindAsync(Id);
@@ -39,6 +40,25 @@ namespace music_manager_starter.Server.Controllers
                     return NotFound("Playlist not found.");
 
                 return Ok(pl);
+            }
+
+            if (SongId.HasValue)
+            {
+                var song = await _context.Songs.FindAsync(SongId);
+                if (song == null) 
+                    return NotFound("Song not found.");
+
+                var playlists = await _context.Playlists
+                    .Select(playlist => new 
+                    {
+                        Id = playlist.Id,
+                        Title = playlist.Title,
+                        InPlaylist = _context.PlaylistSongs
+                            .Any(ps => ps.PlaylistId == playlist.Id && ps.SongId == SongId)
+                    })
+                    .ToListAsync();
+
+                return Ok(playlists);
             }
 
             // return all playlists
