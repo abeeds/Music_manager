@@ -8,12 +8,22 @@
     public string Id { get; set; }
     private List<Song> songs;
     private string playlistTitle;
+    private Guid playlistId;
 
     protected override async Task OnInitializedAsync()
     {
         var playlist = await Http.GetFromJsonAsync<Playlist>($"api/playlists/?Id={Id}");
         playlistTitle = playlist.Title;
+        playlistId = playlist.Id;
         songs = await Http.GetFromJsonAsync<List<Song>>($"api/playlists/songs/?PlaylistId={Id}");
+    }
+
+    private async Task RmSong(Guid songId) {
+        var response = await Http.DeleteAsync($"/api/playlists/songs?PlaylistId={playlistId}&SongId={songId}");
+        if (response.IsSuccessStatusCode)
+        {
+            songs.RemoveAll(s => s.Id == songId);
+        }
     }
 }
 
@@ -24,13 +34,21 @@
         {
             @foreach (var song in songs)
             {
-                <a class="glass p-6 border border-gray-300 rounded-lg text-white transition-transform transform hover:scale-105 hover:shadow-xl cursor-pointer"
-                    href="@($"/{song.Id.ToString("D")}")"
-                >
-                    <h3 class="text-xl font-semibold mb-2">@song.Title</h3>
+                <div class="glass p-6 border border-gray-300 rounded-lg text-white transition-transform transform hover:scale-105 hover:shadow-xl">
+                    <a class="cursor-pointer" href="@($"/{song.Id.ToString("D")}")"><h3 class="text-xl font-semibold mb-2">@song.Title</h3></a>
+                    <svg @onclick="@(() => RmSong(song.Id))"
+                         class="svg_option transition-transform transform hover:scale-105 hover:shadow-xl cursor-pointer"
+                         xmlns="http://www.w3.org/2000/svg"
+                         height="24px"
+                         viewBox="0 -960 960 960"
+                         width="24px"
+                         fill="currentColor"
+                    >
+                        <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z" />
+                    </svg>
                     <p class="text-md">Artist: <span class="font-light">@song.Artist</span></p>
 
-                </a>
+                </div>
             }
         }
         else
@@ -58,15 +76,24 @@
         overflow: hidden; 
     }
 
-        .glass:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            pointer-events: none; 
-        }
+    .glass:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        pointer-events: none; 
+    }
+
+    .svg_option {
+        color: #959da5;
+        margin-right: 0.5rem;
+    }
+
+    .svg_option:hover {
+        color: white;
+    }
 </style>

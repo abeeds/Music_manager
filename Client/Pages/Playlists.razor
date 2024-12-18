@@ -13,7 +13,6 @@
 
     private async Task DelPlaylist(Guid playlistId)
     {
-
         var response = await Http.DeleteAsync($"/api/playlists?Id={playlistId}");
         if (response.IsSuccessStatusCode)
         {
@@ -29,8 +28,7 @@
         {
             @foreach (var playlist in playlists)
             {
-                <div class="glass p-6 border border-gray-300 rounded-lg text-white transition-transform transform hover:scale-105 hover:shadow-xl"
-                >
+                <div class="glass p-6 border border-gray-300 rounded-lg text-white transition-transform transform hover:scale-105 hover:shadow-xl">
                     <a class="cursor-pointer" href="@($"/Playlists/{playlist.Id.ToString("D")}")"><h3 class="text-xl font-semibold mb-2">@playlist.Title</h3></a>
                     <div class="flex space-x-4 items-center">
                         
