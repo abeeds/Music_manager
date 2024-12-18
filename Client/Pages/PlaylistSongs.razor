@@ -7,10 +7,11 @@
     [Parameter]
     public string Id { get; set; }
     private List<Song> songs;
+    private Guid playlistId;
     private string playlistTitle;
+    private string playlistDesc;
     private List<Playlist> playlists = new();
     private Guid currentSongId;
-    private Guid playlistId;
     private bool showPlOptions = false;
 
     protected override async Task OnInitializedAsync()
@@ -18,6 +19,7 @@
         var playlist = await Http.GetFromJsonAsync<Playlist>($"api/playlists/?Id={Id}");
         playlistTitle = playlist.Title;
         playlistId = playlist.Id;
+        playlistDesc = playlist.Desc;
         songs = await Http.GetFromJsonAsync<List<Song>>($"api/playlists/songs/?PlaylistId={Id}");
     }
 
@@ -77,6 +79,7 @@
 
 <div class="p-0 min-h-screen bg-pattern flex flex-col items-center justify-center">
     <h2 class="text-3xl font-bold text-white mb-8 text-center">@playlistTitle</h2>
+    <p class="text-md text-white mb-4">@playlistDesc</p>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         @if (songs != null && songs.Count > 0)
         {
