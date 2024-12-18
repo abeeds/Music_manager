@@ -86,6 +86,9 @@ namespace music_manager_starter.Server.Controllers
         [HttpDelete]
         public async Task<ActionResult<PlaylistSong>> DelPlaylistSong(Guid PlaylistId, Guid SongId)
         {
+            if (PlaylistId == Guid.Empty || SongId == Guid.Empty)
+                return BadRequest("PlaylistId and SongId cannot be null.");
+            
             // ensure playlist exists
             var playlist = await _context.Playlists.FindAsync(PlaylistId);
             if(playlist == null)
