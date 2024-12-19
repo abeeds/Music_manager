@@ -29,7 +29,7 @@ The following endpoints can be found in `Server/Controllers`.
 Endpoints that manage the Playlists table:
 - GET `/api/playlists`
     - Returns all playlists
-- GET `/api/playlists?Id={PLAYLIST_ID}` 
+- GET `/api/playlists/{PLAYLIST_ID}` 
     - Returns the specified playlist's data
     - Id must be a valid Guid
 - POST `/api/playlists`
@@ -39,18 +39,18 @@ Endpoints that manage the Playlists table:
     - Id is required and must be a valid Guid
     - Must have atleast one of these values: Title and Desc
     - Sample JSON Request: `{"Id": "8213D28C-29EB-4365-8867-C721494BD30A", "Desc": "My favorite songs."}`
-- DELETE `/api/playlists?Id={PLAYLIST_ID}`
+- DELETE `/api/playlists/{PLAYLIST_ID}`
     - Deletes the specified playlist
     - Id must be a valid Guid
 
 Endpoints that manage the PlaylistSongs table:
-- GET `/api/playlists/songs?=PlaylistId={PLAYLIST_ID}`
+- GET `/api/playlists/songs/PLAYLIST_ID}`
     - Returns all songs in the specified playlist
     - PlaylistId must be a valid Guid
 - POST `/api/playlists/songs`
     - Adds a song to a playlist
     - Sample JSON Request: `{"PlaylistId": "8213D28C-29EB-4365-8867-C721494BD30A", "SongId": "22AA6F84-06D8-4A0E-BDAD-3000B35B5B5F"}`
-- DELETE `/api/playlists/songs?=PlaylistId={PLAYLIST_ID}&SongId={SONG_ID}`
+- DELETE `/api/playlists/songs/{PLAYLIST_ID}/{SONG_ID}`
     - Removes a song from a playlist
 
 Songs have an icon under their title that allows user to add add them to
@@ -59,8 +59,7 @@ Clicking the checkbox next to the playlist title either adds or removes the
 song from the playlist.
 
 ## Improvement 1 - Song Details
-I implemented this by modifying the GET `/api/songs` endpoint to accept an
-optional parameter, `Id`. If `Id` is provided, it will return the matching
+I implemented this by creating the GET `/api/songs/{Id}`, which returns the specified
 song. In the frontend, I made each individual song redirect to a page with
 the url `/{Id}` if they are clicked. At this new page, all of the song's
 information is shown.
