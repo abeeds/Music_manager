@@ -44,7 +44,7 @@ Endpoints that manage the Playlists table:
     - Id must be a valid Guid
 
 Endpoints that manage the PlaylistSongs table:
-- GET `/api/playlists/songs/PLAYLIST_ID}`
+- GET `/api/playlists/songs/{PLAYLIST_ID}`
     - Returns all songs in the specified playlist
     - PlaylistId must be a valid Guid
 - POST `/api/playlists/songs`
