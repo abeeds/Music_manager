@@ -52,7 +52,7 @@
 
     private async Task RmFromPlaylist(Guid PlaylistId)
     {
-        var response = await Http.DeleteAsync($"api/playlists/songs?PlaylistId={PlaylistId}&SongId={currentSongId}");
+        var response = await Http.DeleteAsync($"api/playlists/songs/{PlaylistId}/{currentSongId}");
 
         if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
         {

@@ -16,18 +16,18 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var playlist = await Http.GetFromJsonAsync<Playlist>($"api/playlists/?Id={Id}");
+        var playlist = await Http.GetFromJsonAsync<Playlist>($"api/playlists/{Id}");
         playlistTitle = playlist.Title;
         playlistId = playlist.Id;
         playlistDesc = playlist.Desc;
-        songs = await Http.GetFromJsonAsync<List<Song>>($"api/playlists/songs/?PlaylistId={Id}");
+        songs = await Http.GetFromJsonAsync<List<Song>>($"api/playlists/songs/{Id}");
     }
 
     private async Task RmSong(Guid songId) {
-        var response = await Http.DeleteAsync($"/api/playlists/songs?PlaylistId={playlistId}&SongId={songId}");
+        var response = await Http.DeleteAsync($"api/playlists/songs/{playlistId}/{songId}");
         if (response.IsSuccessStatusCode)
         {
-            songs.RemoveAll(s => s.Id == songId);
+            songs = await Http.GetFromJsonAsync<List<Song>>($"api/playlists/songs/{Id}");
         }
     }
 
@@ -35,7 +35,7 @@
     {
         currentSongId = SongId;
         showPlOptions = true;
-        playlists = await Http.GetFromJsonAsync<List<Playlist>>($"/api/playlists?SongId={SongId}");
+        playlists = await Http.GetFromJsonAsync<List<Playlist>>($"api/playlists?SongId={SongId}");
     }
 
     private void HidePlOptions()
@@ -63,7 +63,7 @@
 
     private async Task RmFromPlaylist(Guid PlaylistId)
     {
-        var response = await Http.DeleteAsync($"api/playlists/songs?PlaylistId={PlaylistId}&SongId={currentSongId}");
+        var response = await Http.DeleteAsync($"api/playlists/songs/{PlaylistId}/{currentSongId}");
 
         if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
         {
@@ -72,7 +72,7 @@
 
             // update this page if the song was removed from this playlist
             if (PlaylistId == playlistId)
-                songs = await Http.GetFromJsonAsync<List<Song>>($"api/playlists/songs/?PlaylistId={Id}");
+                songs = await Http.GetFromJsonAsync<List<Song>>($"api/playlists/songs/{Id}");
         }
     }
 }

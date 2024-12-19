@@ -36,7 +36,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        newPlaylist = await Http.GetFromJsonAsync<Playlist>($"api/playlists/?Id={Id}");
+        newPlaylist = await Http.GetFromJsonAsync<Playlist>($"api/playlists/{Id}");
     }
 
     private async Task HandleValidSubmit()

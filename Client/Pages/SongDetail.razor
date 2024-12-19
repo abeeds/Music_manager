@@ -9,7 +9,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        song = await Http.GetFromJsonAsync<Song>($"api/songs/?Id={Id}");
+        song = await Http.GetFromJsonAsync<Song>($"api/songs/{Id}");
     }
 }
 

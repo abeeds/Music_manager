@@ -31,17 +31,8 @@ namespace music_manager_starter.Server.Controllers
         // If SongId is included, it will return a list of {Id, Title, InPlaylist}
         //      InPlaylist is a bool indicating if the song is in the playlist
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Playlist>>> GetPlaylists(Guid? Id = null, Guid? SongId = null)
+        public async Task<ActionResult<IEnumerable<Playlist>>> GetPlaylists(Guid? SongId = null)
         {
-            if (Id.HasValue)
-            {
-                var pl = await _context.Playlists.FindAsync(Id);
-                if (pl == null) 
-                    return NotFound("Playlist not found.");
-
-                return Ok(pl);
-            }
-
             if (SongId.HasValue)
             {
                 var song = await _context.Songs.FindAsync(SongId);
@@ -63,6 +54,16 @@ namespace music_manager_starter.Server.Controllers
 
             // return all playlists
             return await _context.Playlists.ToListAsync();
+        }
+
+        [HttpGet("{Id:guid}")]
+        public async Task<ActionResult<IEnumerable<Playlist>>> GetPlaylistById(Guid? Id = null)
+        {
+            var pl = await _context.Playlists.FindAsync(Id);
+            if (pl == null) 
+                return NotFound("Playlist not found.");
+
+            return Ok(pl);
         }
 
         // Creates a new playlist
@@ -105,7 +106,7 @@ namespace music_manager_starter.Server.Controllers
             return Ok("Playlist updated.");
         }
 
-        [HttpDelete]
+        [HttpDelete("{Id:guid}")]
         public async Task<ActionResult<Playlist>> DelPlaylist(Guid Id)
         {
             if(Id == Guid.Empty)

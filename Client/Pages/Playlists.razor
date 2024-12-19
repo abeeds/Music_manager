@@ -15,7 +15,7 @@
 
     private async Task DelPlaylist(Guid playlistId)
     {
-        var response = await Http.DeleteAsync($"/api/playlists?Id={playlistId}");
+        var response = await Http.DeleteAsync($"/api/playlists/{playlistId}");
         if (response.IsSuccessStatusCode)
         {
             playlists.RemoveAll(p => p.Id == playlistId);

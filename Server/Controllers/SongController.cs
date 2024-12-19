@@ -19,18 +19,8 @@ namespace music_manager_starter.Server.Controllers
 
   
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Song>>> GetSongs(Guid? Id = null, string? search = null)
+        public async Task<ActionResult<IEnumerable<Song>>> GetSongs(string? search = null)
         {
-            // return single song if an Id is given
-            if (Id.HasValue)
-            {
-                var s = await _context.Songs.FindAsync(Id);
-                if (s == null)
-                    return NotFound("Song not found.");
-
-                return Ok(s);
-            }
-
             // return song matching search parameters
             if (search != null) 
             {
@@ -50,6 +40,16 @@ namespace music_manager_starter.Server.Controllers
 
             // return all songs if no Id is given
             return await _context.Songs.ToListAsync();
+        }
+
+        [HttpGet("{Id:guid}")]
+        public async Task<ActionResult<Song>> GetSongById(Guid id)
+        {
+            var song = await _context.Songs.FindAsync(id);
+            if (song == null)
+                return NotFound("Song not found.");
+
+            return Ok(song);
         }
 
         [HttpPost]

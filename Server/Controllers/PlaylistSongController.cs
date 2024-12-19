@@ -19,7 +19,7 @@ namespace music_manager_starter.Server.Controllers
 
         // returns songs from the specified playlist
         // also returns that playlists data
-        [HttpGet]
+        [HttpGet("{PlaylistId:guid}")]
         public async Task<ActionResult<IEnumerable<Song>>> GetPlaylistSongs(Guid PlaylistId)
         {
             if(PlaylistId == Guid.Empty)
@@ -83,7 +83,7 @@ namespace music_manager_starter.Server.Controllers
             return Ok();
         }
 
-        [HttpDelete]
+        [HttpDelete("{PlaylistId:guid}/{SongId:guid}")]
         public async Task<ActionResult<PlaylistSong>> DelPlaylistSong(Guid PlaylistId, Guid SongId)
         {
             if (PlaylistId == Guid.Empty || SongId == Guid.Empty)
