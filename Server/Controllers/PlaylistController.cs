@@ -57,7 +57,7 @@ namespace music_manager_starter.Server.Controllers
         }
 
         [HttpGet("{Id:guid}")]
-        public async Task<ActionResult<IEnumerable<Playlist>>> GetPlaylistById(Guid? Id = null)
+        public async Task<ActionResult<IEnumerable<Playlist>>> GetPlaylistById(Guid Id)
         {
             var pl = await _context.Playlists.FindAsync(Id);
             if (pl == null) 

@@ -43,9 +43,9 @@ namespace music_manager_starter.Server.Controllers
         }
 
         [HttpGet("{Id:guid}")]
-        public async Task<ActionResult<Song>> GetSongById(Guid id)
+        public async Task<ActionResult<Song>> GetSongById(Guid Id)
         {
-            var song = await _context.Songs.FindAsync(id);
+            var song = await _context.Songs.FindAsync(Id);
             if (song == null)
                 return NotFound("Song not found.");
 
